@@ -1,11 +1,15 @@
+import people from './data/people.json'
+import planets from './data/planets.json'
+import films from './data/films.json'
+
 import {
-    Link,
     NavLink,
     Outlet,
     useParams,
-    useSearchParams,
     useRouteError
 } from 'react-router-dom'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
 export default function App(props) {
     const { children } = props
@@ -14,150 +18,200 @@ export default function App(props) {
             <nav className="nav">
                 <a href = "/" className="home">Star Wars</a>
                 <ul>
-                    <li><NavLink to="/People">People</NavLink></li>
-                    <li><NavLink to="/Planets">Planets</NavLink></li>
-                    <li><NavLink to="/Films">Films</NavLink></li>
+                    <li><NavLink className='navbar-link' to="/People">People</NavLink></li>
+                    <li><NavLink className='navbar-link' to="/Planets">Planets</NavLink></li>
+                    <li><NavLink className='navbar-link' to="/Films">Films</NavLink></li>
                 </ul>
             </nav>
             <main>{children || <Outlet />}</main>
         </>
     )
-} 
+}
 
-/*
-export default function Navbar (){
-    return <nav className="nav">
-        <a href = "/" className="home">Star Wars</a>
-        <ul>
-            <li>
-                <a href ="/People" >People</a>
-            </li>
-            <li>
-                <a href ="/Planets" >Planets</a>
-            </li>
-            <li>
-                <a href ="/Films" >Films</a>
-            </li>
+function renderFunction (list){
+    return (
+        <ul className="film-list">
+            {list.map((string, id) => (
+                <li key = {id}>
+                    <NavLink to = {string}>{string}</NavLink>
+                </li>
+            ))}
         </ul>
-    </nav>
-} 
-*/
-
-
-
-// const menu = {
-//     tacos: {
-//         name: "Tacos",
-//         image: "https://media.giphy.com/media/KfxPgR9Xb6lRvlFa8x/giphy.gif",
-//         description: "Shell + fillings",
-//         price: 5.95
-//     },
-//     pizza: {
-//         name: "Pizza",
-//         image: "https://media.giphy.com/media/VCDSo9xqCJOjC/giphy.gif",
-//         description: "Crust, sauce, cheese",
-//         price: 19.95
-//     },
-//     sushi: {
-//         name: "Sushi",
-//         image: "https://media1.tenor.com/images/a7087e13ce68524779c9b6946818986b/tenor.gif",
-//         description: "Raw fish + rice",
-//         price: 10.95
-//     }
-// }
+    )
+}
 
 export function Home() {
     return (
         <>
-            <h1>Home</h1>
-            {/* <p><Link to="people">About</Link></p>
-            <p><Link to="/planets">People</Link></p>
-            <p><Link to="/films">Menu</Link></p> */}
+            <h1>Welcome to my StarWars Info Page</h1>
         </>
     )
 }
 
 export function People() {
-    console.log("People page")
-    return <h1>This is the people page</h1>
+    const [person, setPerson ] = useState ([])
+
+    useEffect (() => {
+        const peoplearray = Object.keys(people).map (key => ({
+            id: key,
+            ...people[key]
+        }))
+        setPerson(peoplearray)
+    }, [])
+
+    return (
+        <>
+            <aside>
+                <ul className='sidebar'>
+                    {person.map(person => (
+                        <li key={person.id}>
+                            <NavLink className='sidebar-link' to = {person.id}>{person.name}</NavLink>
+                        </li>
+                    ))}
+                </ul>
+            </aside>
+            <div><Outlet /></div>
+        </>
+    )
+}
+
+export function PeopleHome() {
+    return <h1>People homepage</h1>
+}
+
+export function Person () {
+    const params = useParams()
+    const person1 = people[params.person]
+
+    return(
+        <>
+            <h1 className='header'>{person1.name}</h1>
+            <p><strong>Height:</strong> {person1.height}</p>
+            <p><strong>Mass:</strong> {person1.mass}</p>
+            <p><strong>Hair Color:</strong> {person1.hair_color}</p>
+            <p><strong>Skin Color:</strong> {person1.skin_color}</p>
+            <p><strong>Eye Color:</strong> {person1.eye_color}</p>
+            <p><strong>Birth Year:</strong> {person1.birth_year}</p>
+            <p><strong>Gender:</strong> {person1.gender}</p>
+            <p><strong>Homeworld: </strong> 
+                <NavLink to = {person1.homeworld}>{person1.homeworld}</NavLink>
+            </p>
+            <p><strong>Films:</strong>{renderFunction(person1.films)}</p>
+        </>
+    )
 }
 
 export function Planets() {
-    // throw new Error("about page error")
-    return <h1>Planet page</h1>
+    const [ planet, setPlanet ] = useState([])
+
+    useEffect(() => {
+        const planetarray = Object.keys(planets).map (key => ({
+            id: key,
+            ...planets[key]
+        }))
+        setPlanet(planetarray)
+    }, [])
+
+    return (
+        <>
+            <aside>
+                <ul className='sidebar'>
+                    {planet.map(planet => (
+                        <li key={planet.id}>
+                            <NavLink className='sidebar-link' to = {planet.id}>{planet.name}</NavLink>
+                        </li>
+                    ))}
+                </ul>
+            </aside>
+            <div><Outlet /></div>
+        </>
+    )
+}
+
+export function PlanetHome() {
+    return <h1>Planet homepage</h1>
+}
+
+export function Planet() {
+    const params = useParams()
+    const planet1 = planets[params.planet]
+
+    return(
+        <>
+            <h1 className='header'>{planet1.name}</h1>
+            <p><strong>Rotation Period:</strong> {planet1.rotation_period}</p>
+            <p><strong>Orbital Period:</strong> {planet1.orbital_period}</p>
+            <p><strong>Diameter:</strong> {planet1.diameter}</p>
+            <p><strong>Climate:</strong> {planet1.climate}</p>
+            <p><strong>Gravity:</strong> {planet1.gravity}</p>
+            <p><strong>Terrain:</strong> {planet1.terrain}</p>
+            <p><strong>Surface Water:</strong> {planet1.surface_water}</p>
+            <p><strong>Population:</strong> {planet1.population}</p> 
+            <p><strong>Residents: </strong> 
+                {renderFunction(planet1.residents)}
+            </p>
+            <p><strong>Films:</strong>{renderFunction(planet1.films)}</p>
+        </>
+    )
 }
 
 export function Films() {
-    // throw new Error("about page error")
-    return <h1>Film page</h1>
+    const [film, setFilm ] = useState ([])
+
+    useEffect (() => {
+        const filmarray = Object.keys(films).map (key => ({
+            id: key,
+            ...films[key]
+        }))
+        setFilm(filmarray)
+    }, [])
+
+    return (
+        <>
+            <aside>
+                <ul className='sidebar'>
+                    {film.map(film => (
+                        <li key={film.id}>
+                            <NavLink className='sidebar-link' to = {film.id}>{film.title}</NavLink>
+                        </li>
+                    ))}
+                </ul>
+            </aside>
+            <div><Outlet /></div>
+        </>
+    )
 }
 
-// export function Menu() {
-//     return (
-//         <>
-//             <aside>
-//                 <ul>
-//                     {Object.keys(menu).map(item => (
-//                         <li key={item}>
-//                             <NavLink to={item}>{menu[item].name}</NavLink>
-//                         </li>
-//                     ))}
-//                 </ul>
-//             </aside>
-//             <div><Outlet /></div>
-//         </>
-//     )
-// }
+export function FilmHome() {
+    return <h1>Film homepage</h1>
+}
 
-// export function Root(props) {
-//     const { children } = props
-//     return (
-//         <>
-//             <nav>
-//                 <ul>
-//                     <li><NavLink to="/">Home</NavLink></li>
-//                     <li><NavLink to="/about">About</NavLink></li>
-//                     <li><NavLink to="/people">People</NavLink></li>
-//                     <li><NavLink to="/menu">Menu</NavLink></li>
-//                 </ul>
-//             </nav>
-//             <main>{children || <Outlet />}</main>
-//         </>
-//     )
-// }
+export function Film () {
+    const params = useParams()
+    const film1 = films[params.film]
 
-// // http://localhost:5173/menu/pizza?name=value&name2=value2
-// export function MenuItem() {
-//     const params = useParams()
-//     const [ searchParams, setSearchParams ] = useSearchParams()
+    return(
+        <>
+            <h1 className='header'>{film1.title}</h1>
+            <p><strong>Episode ID:</strong> {film1.episode_id}</p>
+            <p><strong>Opening Crawl:</strong> {film1.opening_crawl}</p>
+            <p><strong>Director:</strong> {film1.director}</p>
+            <p><strong>Producer:</strong> {film1.producer}</p>
+            <p><strong>Release Date:</strong> {film1.release_date}</p>
+            <p><strong>Characters: </strong> 
+                {renderFunction(film1.characters)}
+            </p>
+            <p><strong>Planets:</strong>{renderFunction(film1.planets)}</p>
+        </>
+    )
+}
 
-//     console.log("== params:", params)
-//     console.log("== searchParams:", searchParams)
-
-//     const menuItem = menu[params.menuItem]
-
-//     return (
-//         <>
-//             <h2>{menuItem.name} - ${menuItem.price}</h2>
-//             <p>{menuItem.description}</p>
-//             <div>
-//                 <img src={menuItem.image} />
-//             </div>
-//         </>
-//     )
-// }
-
-// export function Specials() {
-//     return <h1>Specials</h1>
-// }
-
-// export function ErrorPage() {
-//     const error = useRouteError()
-//     console.error(error)
-//     return (
-//         <>
-//             <h1>Error</h1>
-//             <p>{error.statusText || error.message}</p>
-//         </>
-//     )
-// }
+export function ErrorPage() {
+    const error = useRouteError()
+    console.error(error)
+    return (
+        <>
+            <h1 className='error-message'>Error! Page you are looking for does not exist.</h1>
+        </>
+    )
+}
