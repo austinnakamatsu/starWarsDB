@@ -42,9 +42,10 @@ function renderFunction (list){
 
 export function Home() {
     return (
-        <>
-            <h1>Welcome to my StarWars Info Page</h1>
-        </>
+        <div >
+            <h1>Welcome to the Star Wars Universe!</h1>
+            <p>Choose a category above to explore the galaxy far, far away.</p>
+        </div>
     )
 }
 
@@ -61,7 +62,7 @@ export function People() {
 
     return (
         <>
-            <aside>
+            <aside height="100%">
                 <ul className='sidebar'>
                     {person.map(person => (
                         <li key={person.id}>
@@ -76,7 +77,7 @@ export function People() {
 }
 
 export function PeopleHome() {
-    return <h1>People homepage</h1>
+    return <h2>Choose a person to explore the galaxy far, far away.</h2>
 }
 
 export function Person () {
@@ -129,7 +130,7 @@ export function Planets() {
 }
 
 export function PlanetHome() {
-    return <h1>Planet homepage</h1>
+    return <h2>Choose a planet to explore the galaxy far, far away.</h2>
 }
 
 export function Planet() {
@@ -183,7 +184,7 @@ export function Films() {
 }
 
 export function FilmHome() {
-    return <h1>Film homepage</h1>
+    return <h2>Choose a film to explore the galaxy far, far away.</h2>
 }
 
 export function Film () {

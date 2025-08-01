@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import './background.js'
 
 import App, { ErrorPage, People, Films, Planets, Home, Person, PeopleHome, Planet, PlanetHome, Film, FilmHome } from './App'
 import './index.css'
