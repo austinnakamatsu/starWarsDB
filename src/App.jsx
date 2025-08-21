@@ -6,7 +6,8 @@ import {
     NavLink,
     Outlet,
     useParams,
-    useRouteError
+    useRouteError,
+    Link
 } from 'react-router-dom'
 import { useState } from 'react'
 import { useEffect } from 'react'
@@ -16,7 +17,7 @@ export default function App(props) {
     return (
         <>
             <nav className="nav">
-                <NavLink to="/" className={({ isActive }) => 'home'}> Star Wars</NavLink>
+                <Link to="/" className="home">Star Wars</Link>
                 <ul>
                     <li><NavLink className='navbar-link' to="/People">People</NavLink></li>
                     <li><NavLink className='navbar-link' to="/Planets">Planets</NavLink></li>
