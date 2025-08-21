@@ -16,7 +16,7 @@ export default function App(props) {
     return (
         <>
             <nav className="nav">
-                <a href = "/" className="home">Star Wars</a>
+                <NavLink to="/" className={({ isActive }) => 'home'}> Star Wars</NavLink>
                 <ul>
                     <li><NavLink className='navbar-link' to="/People">People</NavLink></li>
                     <li><NavLink className='navbar-link' to="/Planets">Planets</NavLink></li>
